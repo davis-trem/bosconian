@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://models/BoulderShip.tscn" type="PackedScene" id=1]
+[ext_resource path="res://scripts/ITypeFighter.gd" type="Script" id=2]
+
+[sub_resource type="CapsuleShape" id=1]
+radius = 2.14524
+height = 0.480054
+
+[node name="ITypeFighter" type="KinematicBody"]
+script = ExtResource( 2 )
+
+[node name="boulder_ship" parent="." instance=ExtResource( 1 )]
+transform = Transform( -0.85, 0, -1.28346e-07, 0, 0.85, 0, 1.28346e-07, 0, -0.85, -1.74652e-07, 0, -1.15667 )
+
+[node name="CollisionShape" type="CollisionShape" parent="."]
+shape = SubResource( 1 )

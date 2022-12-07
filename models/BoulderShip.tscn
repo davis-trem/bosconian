@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://models/boulder_ship_raw/boulder_ship.glb" type="PackedScene" id=1]
+
+[node name="boulder_ship" instance=ExtResource( 1 )]
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -1.62118e-07, 0, -1.85442 )

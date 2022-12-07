@@ -1,0 +1,181 @@
+[gd_scene load_steps=17 format=2]
+
+[ext_resource path="res://sky_boxes/space_skybox_03.png" type="Texture" id=1]
+[ext_resource path="res://sky_boxes/space_skybox_01.png" type="Texture" id=2]
+[ext_resource path="res://sky_boxes/space_skybox_02.png" type="Texture" id=3]
+[ext_resource path="res://scenes/Player.tscn" type="PackedScene" id=4]
+[ext_resource path="res://scenes/Explosion.tscn" type="PackedScene" id=5]
+[ext_resource path="res://scenes/MiniMap.tscn" type="PackedScene" id=6]
+[ext_resource path="res://scenes/EnemyBase.tscn" type="PackedScene" id=7]
+[ext_resource path="res://scripts/PlayingField.gd" type="Script" id=8]
+[ext_resource path="res://themes/label_theme.tres" type="Theme" id=9]
+[ext_resource path="res://scripts/Level.gd" type="Script" id=10]
+[ext_resource path="res://scenes/ITypeFighter.tscn" type="PackedScene" id=11]
+
+[sub_resource type="BoxShape" id=7]
+extents = Vector3( 0.5, 1, 80.5 )
+
+[sub_resource type="BoxShape" id=8]
+extents = Vector3( 0.5, 1, 50 )
+
+[sub_resource type="AnimatedTexture" id=6]
+flags = 4
+frames = 3
+frame_0/texture = ExtResource( 2 )
+frame_0/delay_sec = 0.5
+frame_1/texture = ExtResource( 3 )
+frame_1/delay_sec = 0.5
+frame_2/texture = ExtResource( 1 )
+frame_2/delay_sec = 0.5
+
+[sub_resource type="PanoramaSky" id=4]
+panorama = SubResource( 6 )
+
+[sub_resource type="Environment" id=5]
+background_mode = 2
+background_sky = SubResource( 4 )
+ambient_light_color = Color( 0.94902, 0.94902, 0.94902, 1 )
+ambient_light_sky_contribution = 0.8
+
+[node name="Level" type="Spatial"]
+script = ExtResource( 10 )
+
+[node name="PlayingField" type="Area" parent="."]
+transform = Transform( 2.6, 0, 0, 0, 1, 0, 0, 0, 2.6, 0, 0, 0 )
+script = ExtResource( 8 )
+
+[node name="LimitLeft" type="CollisionShape" parent="PlayingField"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -50, 0, 0 )
+shape = SubResource( 7 )
+
+[node name="LimitRight" type="CollisionShape" parent="PlayingField"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 50, 0, 0 )
+shape = SubResource( 7 )
+
+[node name="LimitTop" type="CollisionShape" parent="PlayingField"]
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0, -80 )
+shape = SubResource( 8 )
+
+[node name="LimitBottom" type="CollisionShape" parent="PlayingField"]
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0, 80 )
+shape = SubResource( 8 )
+
+[node name="GridContainer" type="HBoxContainer" parent="."]
+margin_right = 1024.0
+margin_bottom = 600.0
+
+[node name="ViewportContainer" type="ViewportContainer" parent="GridContainer"]
+margin_right = 664.0
+margin_bottom = 600.0
+
+[node name="Viewport" type="Viewport" parent="GridContainer/ViewportContainer"]
+size = Vector2( 664, 600 )
+handle_input_locally = false
+render_target_update_mode = 3
+
+[node name="Player" parent="GridContainer/ViewportContainer/Viewport" instance=ExtResource( 4 )]
+transform = Transform( 0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0 )
+
+[node name="SideMenu" type="CenterContainer" parent="GridContainer"]
+margin_left = 668.0
+margin_right = 1028.0
+margin_bottom = 600.0
+rect_min_size = Vector2( 360, 600 )
+
+[node name="GridContainer" type="GridContainer" parent="GridContainer/SideMenu"]
+margin_left = 61.0
+margin_top = 20.0
+margin_right = 299.0
+margin_bottom = 580.0
+
+[node name="HiScoreLabel" type="Label" parent="GridContainer/SideMenu/GridContainer"]
+margin_right = 238.0
+margin_bottom = 31.0
+theme = ExtResource( 9 )
+text = "Hi-Score"
+uppercase = true
+
+[node name="HiScore" type="Label" parent="GridContainer/SideMenu/GridContainer"]
+margin_top = 35.0
+margin_right = 238.0
+margin_bottom = 66.0
+theme = ExtResource( 9 )
+text = "1000"
+align = 2
+
+[node name="CurrentScore" type="Label" parent="GridContainer/SideMenu/GridContainer"]
+margin_top = 70.0
+margin_right = 238.0
+margin_bottom = 101.0
+theme = ExtResource( 9 )
+text = "1000"
+align = 2
+
+[node name="Status" type="Label" parent="GridContainer/SideMenu/GridContainer"]
+margin_top = 105.0
+margin_right = 238.0
+margin_bottom = 136.0
+theme = ExtResource( 9 )
+text = "Green"
+align = 1
+uppercase = true
+
+[node name="MiniMap" parent="GridContainer/SideMenu/GridContainer" instance=ExtResource( 6 )]
+margin_right = 238.0
+playing_field_path = NodePath("../../../../PlayingField")
+
+[node name="LivesContainer2" type="GridContainer" parent="GridContainer/SideMenu/GridContainer"]
+margin_top = 494.0
+margin_right = 238.0
+margin_bottom = 525.0
+
+[node name="Label" type="Label" parent="GridContainer/SideMenu/GridContainer/LivesContainer2"]
+margin_right = 21.0
+margin_bottom = 31.0
+theme = ExtResource( 9 )
+text = "x"
+uppercase = true
+
+[node name="RoundContainer" type="GridContainer" parent="GridContainer/SideMenu/GridContainer"]
+margin_top = 529.0
+margin_right = 238.0
+margin_bottom = 560.0
+columns = 2
+
+[node name="Label" type="Label" parent="GridContainer/SideMenu/GridContainer/RoundContainer"]
+margin_right = 100.0
+margin_bottom = 31.0
+theme = ExtResource( 9 )
+text = "round"
+uppercase = true
+
+[node name="CurrentRound" type="Label" parent="GridContainer/SideMenu/GridContainer/RoundContainer"]
+margin_left = 104.0
+margin_right = 238.0
+margin_bottom = 31.0
+rect_min_size = Vector2( 134, 0 )
+theme = ExtResource( 9 )
+text = "1"
+align = 2
+uppercase = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource( 5 )
+
+[node name="EnemyBase" parent="." instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.528, -31 )
+
+[node name="EnemyBase2" parent="." instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.528, 31 )
+oriented_horizontally = true
+
+[node name="ITypeFighter" parent="." instance=ExtResource( 11 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 7.20747, 0, 0 )
+
+[node name="Explosion" parent="." instance=ExtResource( 5 )]
+transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, -7.82349, 0, 21.6164 )
+explode_on_start = true
+
+[connection signal="area_exited" from="PlayingField" to="PlayingField" method="_on_PlayingField_area_exited"]
+[connection signal="body_entered" from="PlayingField" to="PlayingField" method="_on_PlayingField_body_entered"]
+[connection signal="body_exited" from="PlayingField" to="PlayingField" method="_on_PlayingField_body_exited"]

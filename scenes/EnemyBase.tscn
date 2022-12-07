@@ -1,0 +1,68 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://scripts/EnemyBase.gd" type="Script" id=1]
+[ext_resource path="res://scenes/CannonOrb.tscn" type="PackedScene" id=2]
+
+[sub_resource type="CylinderShape" id=5]
+radius = 0.470712
+height = 0.553891
+
+[sub_resource type="CylinderMesh" id=6]
+top_radius = 0.47
+bottom_radius = 0.47
+height = 0.55
+
+[sub_resource type="SpatialMaterial" id=7]
+albedo_color = Color( 0.72549, 0.0823529, 0.0823529, 1 )
+
+[sub_resource type="CapsuleShape" id=10]
+radius = 1.90017
+height = 1.88829
+
+[sub_resource type="CapsuleMesh" id=8]
+
+[sub_resource type="SpatialMaterial" id=9]
+albedo_color = Color( 0.0196078, 0.27451, 0.0588235, 1 )
+
+[node name="EnemyBase" type="StaticBody" groups=["enemy_base"]]
+script = ExtResource( 1 )
+
+[node name="Core" type="CollisionShape" parent="."]
+transform = Transform( -1.77031e-07, -2.5, 0, 4.05, -1.09278e-07, 0, 0, 0, 4.05, 0, 0, 0 )
+shape = SubResource( 5 )
+
+[node name="MeshInstance" type="MeshInstance" parent="Core"]
+transform = Transform( 1, -4.73695e-14, 0, 4.73695e-14, 1, 0, 0, 0, 1, 0, 0, 0 )
+mesh = SubResource( 6 )
+skeleton = NodePath("")
+material/0 = SubResource( 7 )
+
+[node name="CoreBody" type="Area" parent="."]
+
+[node name="CollisionShape" type="CollisionShape" parent="CoreBody"]
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0, 0 )
+shape = SubResource( 10 )
+
+[node name="MeshInstance" type="MeshInstance" parent="CoreBody"]
+transform = Transform( -8.30516e-08, 0, 1.9, 0, 1.9, 0, -1.9, 0, -8.30516e-08, 0, 0, 0 )
+mesh = SubResource( 8 )
+skeleton = NodePath("../..")
+material/0 = SubResource( 9 )
+
+[node name="CannonOrb" parent="." instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, 0 )
+
+[node name="CannonOrb2" parent="." instance=ExtResource( 2 )]
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 5, 0, 0 )
+
+[node name="CannonOrb3" parent="." instance=ExtResource( 2 )]
+transform = Transform( 0.382683, 0, 0.92388, 0, 1, 0, -0.92388, 0, 0.382683, -2.5, 0, 4 )
+
+[node name="CannonOrb4" parent="." instance=ExtResource( 2 )]
+transform = Transform( -0.382683, 0, 0.92388, 0, 1, 0, -0.92388, 0, -0.382683, 2.5, 0, 4 )
+
+[node name="CannonOrb5" parent="." instance=ExtResource( 2 )]
+transform = Transform( 0.382683, 0, -0.92388, 0, 1, 0, 0.92388, 0, 0.382683, -2.5, 0, -4 )
+
+[node name="CannonOrb6" parent="." instance=ExtResource( 2 )]
+transform = Transform( -0.382683, 0, -0.92388, 0, 1, 0, 0.92388, 0, -0.382683, 2.5, 0, -4 )
