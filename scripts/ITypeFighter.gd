@@ -1,42 +1,45 @@
 extends KinematicBody
 
+export var is_squad_leader = false
 
-const SPEED = 10.0
+const SPEED = 18.0
 
 func _ready():
-	var player = Global.find_closest_player(global_transform.origin)
-	
-	var player_direction = (player.global_transform.origin - global_transform.origin).normalized()
-	print(player.global_transform.origin)
-	print(global_transform.origin)
-	print(player.global_transform.origin - global_transform.origin)
-	print(player_direction)
+	pass
 
 
 func _physics_process(delta):
 	var player = Global.find_closest_player(global_transform.origin)
 	
-	var player_direction = (player.global_transform.origin - global_transform.origin).normalized()
-	var look_direction = Vector2(-player_direction.z, -player_direction.x)
+	var closest_front_or_back = Global.find_closest_node_in_list_to_target(
+		global_transform.origin,
+		player.get_child(player.BULLET_PROJECT_ARM_INDEX).get_children()
+	)
+	
+	var front_or_back_direction = Global.direction_towards_and_wrap_field(
+		global_transform.origin,
+		closest_front_or_back.global_transform.origin
+	)
+	
+#	var front_or_back_direction = Global.direction_towards_and_wrap_field(
+#		global_transform.origin,
+#		player.global_transform.origin
+##		Vector3(20*sin(player.global_transform.origin.x/6) + player.global_transform.origin.x, 0, player.global_transform.origin.z)
+##		Vector3(player.global_transform.origin.x, 0, 50*sin(player.global_transform.origin.x/4))
+#	)
+
+#	print(front_or_back_direction)
+#	var aaa = Vector2(front_or_back_direction.x, front_or_back_direction.z).angle()
+#	var xxx = sin(aaa) + aaa
+#	front_or_back_direction = Vector3(cos(xxx), 0, sin(xxx)).normalized()
+#	front_or_back_direction = Vector3(sin(front_or_back_direction.x), 0, sin(front_or_back_direction.z)).normalized()
+#	print(front_or_back_direction)
+#	print('---------')
+	
+	var look_direction = Vector2(-front_or_back_direction.z, -front_or_back_direction.x)
 	if rotation.y != look_direction.angle():
 		rotation = rotation.move_toward(
 			Vector3(0, look_direction.angle(), 0),
 			0.5
 		)
-	
-#	var closest_front_or_back = Global.find_closest_node_in_list_to_target(
-#		global_transform.origin,
-#		player.get_child(player.BULLET_PROJECT_ARM_INDEX).get_children()
-#	)
-	var closest_front_or_back = Global.find_closest_node_in_list_to_target(
-		global_transform.origin,
-		player.get_child(player.SIDE_ARM_INDEX).get_children()
-	)
-#	var front_or_back_direction = (
-#		closest_front_or_back.global_transform.origin - global_transform.origin
-#	).normalized()
-	var front_or_back_direction = global_transform.origin.direction_to(closest_front_or_back.global_transform.origin).normalized()
-	print(front_or_back_direction)
-	print(front_or_back_direction)
-	print('------------')
-	move_and_slide(SPEED * -front_or_back_direction)
+	move_and_slide(SPEED * front_or_back_direction)

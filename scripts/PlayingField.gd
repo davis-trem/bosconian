@@ -14,6 +14,10 @@ onready var limits = {
 }
 
 
+func _ready():
+	Global._playing_field = self
+
+
 func _on_PlayingField_body_entered(body):
 	pass # Replace with function body.
 

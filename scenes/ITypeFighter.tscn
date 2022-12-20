@@ -7,11 +7,12 @@
 radius = 2.14524
 height = 0.480054
 
-[node name="ITypeFighter" type="KinematicBody"]
+[node name="ITypeFighter" type="KinematicBody" groups=["enemy_ship"]]
 script = ExtResource( 2 )
 
 [node name="boulder_ship" parent="." instance=ExtResource( 1 )]
 transform = Transform( -0.85, 0, -1.28346e-07, 0, 0.85, 0, 1.28346e-07, 0, -0.85, -1.74652e-07, 0, -1.15667 )
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
+transform = Transform( 1, 0, 0, 0, 0.7, 0, 0, 0, 1, 0, 0, 0 )
 shape = SubResource( 1 )

@@ -5,7 +5,6 @@ const bullet_path = preload('res://scenes/Bullet.tscn')
 
 const SPEED = 18.0
 const BULLET_PROJECT_ARM_INDEX = 4
-const SIDE_ARM_INDEX = 5
 
 onready var _top_down_camera: Camera = $TopDownCamera
 onready var _cockpit_camera: Camera = $CockpitCamera
