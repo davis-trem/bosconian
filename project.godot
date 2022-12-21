@@ -32,6 +32,16 @@ Global="*res://scripts/Global.gd"
 
 singletons=[ "res://addons/godot-git-plugin/git_api.gdnlib" ]
 
+[global]
+
+Layer=false
+
+[layer_names]
+
+3d_physics/layer_1="players"
+3d_physics/layer_2="enemies"
+3d_physics/layer_3="mines_and_projectiles"
+
 [physics]
 
 common/enable_pause_aware_picking=true

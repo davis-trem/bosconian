@@ -8,6 +8,8 @@ radius = 2.14524
 height = 0.480054
 
 [node name="ITypeFighter" type="KinematicBody" groups=["enemy_ship"]]
+collision_layer = 2
+collision_mask = 5
 script = ExtResource( 2 )
 
 [node name="boulder_ship" parent="." instance=ExtResource( 1 )]
@@ -16,3 +18,9 @@ transform = Transform( -0.85, 0, -1.28346e-07, 0, 0.85, 0, 1.28346e-07, 0, -0.85
 [node name="CollisionShape" type="CollisionShape" parent="."]
 transform = Transform( 1, 0, 0, 0, 0.7, 0, 0, 0, 1, 0, 0, 0 )
 shape = SubResource( 1 )
+
+[node name="VisibilityNotifier" type="VisibilityNotifier" parent="."]
+aabb = AABB( -2.10392, -0.868155, 2.10959, 4.20783, 1.73631, 1.02398 )
+
+[connection signal="camera_entered" from="VisibilityNotifier" to="." method="_on_VisibilityNotifier_camera_entered"]
+[connection signal="camera_exited" from="VisibilityNotifier" to="." method="_on_VisibilityNotifier_camera_exited"]

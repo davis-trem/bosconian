@@ -7,6 +7,8 @@
 points = PoolVector3Array( -2, 0.6, 1.5, 2, 0.6, 1.5, 2, -0.6, 1.5, -2, -0.6, 1.5, 0, 0.6, -1.7, 0, -0.6, -1.7 )
 
 [node name="SpyShip" type="KinematicBody" groups=["enemy_ship", "spy_ship"]]
+collision_layer = 2
+collision_mask = 5
 script = ExtResource( 2 )
 
 [node name="xwing" parent="." instance=ExtResource( 1 )]
@@ -16,7 +18,7 @@ transform = Transform( -8.74228e-09, 0, 0.2, 0, 0.2, 0, -0.2, 0, -8.74228e-09, 0
 shape = SubResource( 1 )
 
 [node name="VisibilityNotifier" type="VisibilityNotifier" parent="."]
-aabb = AABB( -1.45625, -0.635453, 1.21962, 2.91249, 1.27091, 0.262902 )
+aabb = AABB( -1.45625, -0.635453, 2.46132, 2.91249, 1.27091, 0.262902 )
 
 [connection signal="camera_entered" from="VisibilityNotifier" to="." method="_on_VisibilityNotifier_camera_entered"]
 [connection signal="camera_exited" from="VisibilityNotifier" to="." method="_on_VisibilityNotifier_camera_exited"]

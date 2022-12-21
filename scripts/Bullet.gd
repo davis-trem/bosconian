@@ -41,6 +41,8 @@ func handle_bullet_hit(target):
 				node_to_explode.on_core_hit()
 			elif target.is_in_group('cannon_orb'):
 				node_to_explode.on_cannon_orb_hit(target)
+		elif node_to_explode.is_in_group('enemy_ship'):
+			node_to_explode.on_hit()
 	# enemy shoots player
 	elif not is_from_player and node_to_explode.is_in_group('player'):
 		pass
