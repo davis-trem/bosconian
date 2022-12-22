@@ -174,7 +174,7 @@ transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, -7.82349, 0, 21.6164 )
 explode_on_start = true
 
 [node name="SpyShip" parent="." instance=ExtResource( 12 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 33.0692, 0, 31.181 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 34.7252, 0, 4.10493 )
 
 [connection signal="area_exited" from="PlayingField" to="PlayingField" method="_on_PlayingField_area_exited"]
 [connection signal="body_entered" from="PlayingField" to="PlayingField" method="_on_PlayingField_body_entered"]

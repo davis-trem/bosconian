@@ -38,16 +38,7 @@ func _ready():
 
 	var enemy_ship_nodes = get_tree().get_nodes_in_group('enemy_ship')
 	for enemy_ship in enemy_ship_nodes:
-		if enemy_ship.is_in_group('spy_ship'):
-			var new_enemy_ship_marker = _spy_ship_marker.duplicate()
-			add_child(new_enemy_ship_marker)
-			new_enemy_ship_marker.show()
-			enemy_markers[enemy_ship] = new_enemy_ship_marker
-		elif enemy_ship.is_squad_leader:
-			var new_enemy_ship_marker = _enemy_ship_marker.duplicate()
-			add_child(new_enemy_ship_marker)
-			new_enemy_ship_marker.show()
-			enemy_markers[enemy_ship] = new_enemy_ship_marker
+		add_enemy_ship(enemy_ship)
 
 
 func _process(delta):
@@ -80,3 +71,16 @@ func _process(delta):
 		else:
 			enemy_markers[enemy].queue_free()
 			enemy_markers.erase(enemy)
+
+
+func add_enemy_ship(enemy_ship: KinematicBody):
+	if enemy_ship.is_in_group('spy_ship'):
+			var new_enemy_ship_marker = _spy_ship_marker.duplicate()
+			add_child(new_enemy_ship_marker)
+			new_enemy_ship_marker.show()
+			enemy_markers[enemy_ship] = new_enemy_ship_marker
+	elif enemy_ship.is_squad_leader:
+		var new_enemy_ship_marker = _enemy_ship_marker.duplicate()
+		add_child(new_enemy_ship_marker)
+		new_enemy_ship_marker.show()
+		enemy_markers[enemy_ship] = new_enemy_ship_marker

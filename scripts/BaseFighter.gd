@@ -18,7 +18,7 @@ func _physics_process(delta):
 		kill_timer += delta
 		if kill_timer > KILL_TIME:
 			if times_allowed_to_retreated == 0: 
-				queue_free()
+				escape()
 			else:
 				is_retreating = false
 				start_kill_timer = false
@@ -56,6 +56,10 @@ func retreat():
 	is_retreating = true
 	start_kill_timer = false
 	kill_timer = 0
+
+
+func escape():
+	queue_free()
 
 
 func on_hit(increase_score = true):

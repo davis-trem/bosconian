@@ -2,10 +2,8 @@ extends 'res://scripts/BaseFighter.gd'
 
 export var is_squad_leader = false
 
-const SPEED = 18.0
-
 func _ready():
-	self.speed = 18.0
+	self.speed = 20.0
 	self.score_value = 100 if is_squad_leader else 50
 
 

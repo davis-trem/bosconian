@@ -22,6 +22,10 @@ func increase_current_score(points):
 		_level._hi_score_label.text = str(hi_score)
 
 
+func set_status(s: String):
+	status = s
+
+
 func find_closest_node_in_list_to_target(target_origin: Vector3, list):
 	var closest_node
 	for node in list:
