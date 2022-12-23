@@ -79,7 +79,7 @@ func add_enemy_ship(enemy_ship: KinematicBody):
 			add_child(new_enemy_ship_marker)
 			new_enemy_ship_marker.show()
 			enemy_markers[enemy_ship] = new_enemy_ship_marker
-	elif enemy_ship.is_squad_leader:
+	elif enemy_ship.is_squad_leader():
 		var new_enemy_ship_marker = _enemy_ship_marker.duplicate()
 		add_child(new_enemy_ship_marker)
 		new_enemy_ship_marker.show()

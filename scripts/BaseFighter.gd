@@ -6,6 +6,13 @@ const KILL_TIME = 7
 
 var score_value = 0
 var speed = 18.0
+
+# Squad info
+var squad_leader
+var is_in_squad = false
+var squad_formation_offset = Vector3.ZERO
+
+# Retreat info
 var should_retreat = false
 var is_retreating = false
 var start_kill_timer = false
@@ -25,15 +32,25 @@ func _physics_process(delta):
 				kill_timer = 0
 				times_allowed_to_retreated -= 1
 
+	# If squad leader was killed, retreat
+	if is_in_squad and not is_instance_valid(squad_leader):
+		is_in_squad = false
+		should_retreat = true
+		retreat()
+
 	var target = get_follow_target() * (-1 if is_retreating else 1)
 
-	var look_direction = Vector2(-target.z, -target.x)
-	if rotation.y != look_direction.angle():
+	var look_direction = (squad_leader.rotation.y if is_in_squad and not is_squad_leader()
+		else Vector2(-target.z, -target.x).angle())
+	if rotation.y != look_direction:
 		rotation = rotation.move_toward(
-			Vector3(0, look_direction.angle(), 0),
+			Vector3(0, look_direction, 0),
 			0.5
 		)
-	move_and_slide(speed * target)
+	if is_in_squad and not is_squad_leader():
+		translation = squad_leader.translation + squad_formation_offset
+	else:
+		move_and_slide(speed * target)
 
 
 func get_follow_target() -> Vector3:
@@ -43,12 +60,12 @@ func get_follow_target() -> Vector3:
 		global_transform.origin,
 		player.get_child(player.BULLET_PROJECT_ARM_INDEX).get_children()
 	)
-	
+
 	var front_or_back_direction = Global.direction_towards_and_wrap_field(
 		global_transform.origin,
 		closest_front_or_back.global_transform.origin
 	)
-	
+
 	return front_or_back_direction
 
 
@@ -60,6 +77,10 @@ func retreat():
 
 func escape():
 	queue_free()
+
+
+func is_squad_leader():
+	return is_in_squad and squad_leader == self
 
 
 func on_hit(increase_score = true):

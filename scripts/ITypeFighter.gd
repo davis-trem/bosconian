@@ -1,10 +1,9 @@
 extends 'res://scripts/BaseFighter.gd'
 
-export var is_squad_leader = false
 
 func _ready():
 	self.speed = 20.0
-	self.score_value = 100 if is_squad_leader else 50
+	self.score_value = 100 if self.is_squad_leader() else 50
 
 
 #func _physics_process(delta):
