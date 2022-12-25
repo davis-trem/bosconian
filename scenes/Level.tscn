@@ -59,100 +59,117 @@ shape = SubResource( 8 )
 transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0, 80 )
 shape = SubResource( 8 )
 
-[node name="GridContainer" type="HBoxContainer" parent="."]
+[node name="OverView" type="HBoxContainer" parent="."]
 margin_right = 1024.0
 margin_bottom = 600.0
 
-[node name="ViewportContainer" type="ViewportContainer" parent="GridContainer"]
+[node name="PlayerViewportContainer" type="ViewportContainer" parent="OverView"]
 margin_right = 664.0
 margin_bottom = 600.0
 
-[node name="Viewport" type="Viewport" parent="GridContainer/ViewportContainer"]
+[node name="Viewport" type="Viewport" parent="OverView/PlayerViewportContainer"]
 size = Vector2( 664, 600 )
 handle_input_locally = false
 render_target_update_mode = 3
 
-[node name="Player" parent="GridContainer/ViewportContainer/Viewport" instance=ExtResource( 4 )]
+[node name="Player" parent="OverView/PlayerViewportContainer/Viewport" instance=ExtResource( 4 )]
 transform = Transform( 0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0 )
 
-[node name="SideMenu" type="CenterContainer" parent="GridContainer"]
+[node name="SideMenu" type="MarginContainer" parent="OverView"]
 margin_left = 668.0
-margin_right = 1028.0
+margin_right = 1024.0
 margin_bottom = 600.0
-rect_min_size = Vector2( 360, 600 )
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_constants/margin_right = 30
+custom_constants/margin_top = 30
+custom_constants/margin_left = 30
+custom_constants/margin_bottom = 0
 
-[node name="GridContainer" type="GridContainer" parent="GridContainer/SideMenu"]
-margin_left = 61.0
-margin_top = 20.0
-margin_right = 299.0
-margin_bottom = 580.0
+[node name="SideMenuItems" type="VBoxContainer" parent="OverView/SideMenu"]
+margin_left = 30.0
+margin_top = 30.0
+margin_right = 326.0
+margin_bottom = 600.0
 
-[node name="HiScoreLabel" type="Label" parent="GridContainer/SideMenu/GridContainer"]
-margin_right = 238.0
+[node name="HiScoreLabel" type="Label" parent="OverView/SideMenu/SideMenuItems"]
+margin_right = 296.0
 margin_bottom = 31.0
+size_flags_horizontal = 3
 theme = ExtResource( 9 )
 text = "Hi-Score"
 uppercase = true
 
-[node name="HiScore" type="Label" parent="GridContainer/SideMenu/GridContainer"]
+[node name="HiScore" type="Label" parent="OverView/SideMenu/SideMenuItems"]
 margin_top = 35.0
-margin_right = 238.0
+margin_right = 296.0
 margin_bottom = 66.0
+size_flags_horizontal = 3
 theme = ExtResource( 9 )
 text = "1000"
 align = 2
 
-[node name="CurrentScore" type="Label" parent="GridContainer/SideMenu/GridContainer"]
+[node name="CurrentScore" type="Label" parent="OverView/SideMenu/SideMenuItems"]
 margin_top = 70.0
-margin_right = 238.0
+margin_right = 296.0
 margin_bottom = 101.0
+size_flags_horizontal = 3
 theme = ExtResource( 9 )
 text = "1000"
 align = 2
 
-[node name="Status" type="Label" parent="GridContainer/SideMenu/GridContainer"]
+[node name="Status" type="Label" parent="OverView/SideMenu/SideMenuItems"]
 margin_top = 105.0
-margin_right = 238.0
+margin_right = 296.0
 margin_bottom = 136.0
+size_flags_horizontal = 3
 theme = ExtResource( 9 )
 text = "Green"
 align = 1
 uppercase = true
 
-[node name="MiniMap" parent="GridContainer/SideMenu/GridContainer" instance=ExtResource( 6 )]
-margin_right = 238.0
-playing_field_path = NodePath("../../../../PlayingField")
+[node name="MiniMapContainer" type="CenterContainer" parent="OverView/SideMenu/SideMenuItems"]
+margin_top = 140.0
+margin_right = 296.0
+margin_bottom = 490.0
 
-[node name="LivesContainer2" type="GridContainer" parent="GridContainer/SideMenu/GridContainer"]
+[node name="MiniMap" parent="OverView/SideMenu/SideMenuItems/MiniMapContainer" instance=ExtResource( 6 )]
+margin_left = 31.0
+margin_top = 0.0
+margin_right = 265.0
+margin_bottom = 350.0
+playing_field_path = NodePath("../../../../../PlayingField")
+
+[node name="LivesContainer2" type="HBoxContainer" parent="OverView/SideMenu/SideMenuItems"]
 margin_top = 494.0
-margin_right = 238.0
+margin_right = 296.0
 margin_bottom = 525.0
 
-[node name="Label" type="Label" parent="GridContainer/SideMenu/GridContainer/LivesContainer2"]
+[node name="Label" type="Label" parent="OverView/SideMenu/SideMenuItems/LivesContainer2"]
 margin_right = 21.0
 margin_bottom = 31.0
 theme = ExtResource( 9 )
 text = "x"
 uppercase = true
 
-[node name="RoundContainer" type="GridContainer" parent="GridContainer/SideMenu/GridContainer"]
+[node name="RoundContainer" type="HBoxContainer" parent="OverView/SideMenu/SideMenuItems"]
 margin_top = 529.0
-margin_right = 238.0
+margin_right = 296.0
 margin_bottom = 560.0
-columns = 2
+size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="GridContainer/SideMenu/GridContainer/RoundContainer"]
+[node name="Label" type="Label" parent="OverView/SideMenu/SideMenuItems/RoundContainer"]
 margin_right = 100.0
 margin_bottom = 31.0
 theme = ExtResource( 9 )
 text = "round"
 uppercase = true
 
-[node name="CurrentRound" type="Label" parent="GridContainer/SideMenu/GridContainer/RoundContainer"]
+[node name="CurrentRound" type="Label" parent="OverView/SideMenu/SideMenuItems/RoundContainer"]
 margin_left = 104.0
-margin_right = 238.0
+margin_right = 296.0
 margin_bottom = 31.0
-rect_min_size = Vector2( 134, 0 )
+size_flags_horizontal = 3
 theme = ExtResource( 9 )
 text = "1"
 align = 2

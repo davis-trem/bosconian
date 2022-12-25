@@ -22,23 +22,7 @@ var player_markers = {}
 
 
 func _ready():
-	var player_nodes = get_tree().get_nodes_in_group('player')
-	for player in player_nodes:
-		var new_player_marker = _player_marker.duplicate()
-		add_child(new_player_marker)
-		new_player_marker.show()
-		player_markers[player] = new_player_marker
-
-	var enemy_base_nodes = get_tree().get_nodes_in_group('enemy_base')
-	for enemy_base in enemy_base_nodes:
-		var new_enemy_base_marker = _enemy_base_marker.duplicate()
-		add_child(new_enemy_base_marker)
-		new_enemy_base_marker.show()
-		enemy_markers[enemy_base] = new_enemy_base_marker
-
-	var enemy_ship_nodes = get_tree().get_nodes_in_group('enemy_ship')
-	for enemy_ship in enemy_ship_nodes:
-		add_enemy_ship(enemy_ship)
+	init_markers()
 
 
 func _process(delta):
@@ -71,6 +55,26 @@ func _process(delta):
 		else:
 			enemy_markers[enemy].queue_free()
 			enemy_markers.erase(enemy)
+
+
+func init_markers():
+	var player_nodes = get_tree().get_nodes_in_group('player')
+	for player in player_nodes:
+		var new_player_marker = _player_marker.duplicate()
+		add_child(new_player_marker)
+		new_player_marker.show()
+		player_markers[player] = new_player_marker
+
+	var enemy_base_nodes = get_tree().get_nodes_in_group('enemy_base')
+	for enemy_base in enemy_base_nodes:
+		var new_enemy_base_marker = _enemy_base_marker.duplicate()
+		add_child(new_enemy_base_marker)
+		new_enemy_base_marker.show()
+		enemy_markers[enemy_base] = new_enemy_base_marker
+
+	var enemy_ship_nodes = get_tree().get_nodes_in_group('enemy_ship')
+	for enemy_ship in enemy_ship_nodes:
+		add_enemy_ship(enemy_ship)
 
 
 func add_enemy_ship(enemy_ship: KinematicBody):
