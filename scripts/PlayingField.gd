@@ -1,5 +1,7 @@
 extends Area
 
+class_name PlayingField
+
 
 onready var _limit_left_collision = $LimitLeft
 onready var _limit_right_collision = $LimitRight

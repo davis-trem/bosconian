@@ -1,13 +1,21 @@
 extends Spatial
 
+class_name Level
+
 const i_type_fighter_path = preload('res://scenes/ITypeFighter.tscn')
 const spy_ship_path = preload('res://scenes/SpyShip.tscn')
 
 onready var _hi_score_label = $OverView/SideMenu/SideMenuItems/HiScore
 onready var _current_score_label = $OverView/SideMenu/SideMenuItems/CurrentScore
-onready var _status_label = $OverView/SideMenu/SideMenuItems/Status
+onready var _condition_label = $OverView/SideMenu/SideMenuItems/StatusContainer/Condition
+onready var _status_label = $OverView/SideMenu/SideMenuItems/StatusContainer/Status
+onready var _formation_attack_label = $OverView/SideMenu/SideMenuItems/StatusContainer/FormationAttack
+onready var _formation_icon = $OverView/SideMenu/SideMenuItems/StatusContainer/FormationIcon
+onready var _status_anim_player = $OverView/SideMenu/SideMenuItems/StatusContainer/AnimationPlayer
 onready var _current_round_label = $OverView/SideMenu/SideMenuItems/RoundContainer/CurrentRound
 onready var _mini_map = $OverView/SideMenu/SideMenuItems/MiniMapContainer/MiniMap
+onready var _lives_container = $OverView/SideMenu/SideMenuItems/LivesContainer
+onready var _life_icon = $OverView/SideMenu/SideMenuItems/LifeIcon
 
 # Formation Info
 const FORMATION_OFFSET = 8
@@ -49,9 +57,10 @@ func _ready():
 	randomize()
 
 	Global._level = self
+	Global.set_status(Global.status)
+	Global.set_player_lives(Global.lives)
 	_hi_score_label.text = str(Global.hi_score)
 	_current_score_label.text = str(Global.current_score)
-	_status_label.text = Global.status
 	_current_round_label.text = str(Global.current_round)
 
 	spawn_points = [

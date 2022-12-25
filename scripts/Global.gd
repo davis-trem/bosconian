@@ -4,14 +4,21 @@ extends Node
 const STATUS_GREEN = 'green'
 const STATUS_YELLOW = 'yellow'
 const STATUS_RED = 'red'
-const STATUS_ENEMY_FORMATION = 'enemy_formation'
+const STATUS_ENEMY_FORMATION = 'enemy formation'
+const STATUS_COLORS = {
+	STATUS_GREEN: '#008f00',
+	STATUS_YELLOW: '#e6dd0d',
+	STATUS_RED: '#cd0000',
+	STATUS_ENEMY_FORMATION: '#cd0000',
+}
 
-var hi_score = 20000
-var current_score = 0
+var hi_score := 20000
+var current_score := 0
 var status = STATUS_GREEN
-var current_round = 1
-var _level
-var _playing_field
+var current_round := 1
+var lives := 3
+var _level: Level
+var _playing_field: PlayingField
 
 func increase_current_score(points):
 	current_score += points
@@ -24,6 +31,39 @@ func increase_current_score(points):
 
 func set_status(s: String):
 	status = s
+	if status == STATUS_ENEMY_FORMATION:
+		_level._condition_label.hide()
+		_level._status_label.hide()
+		_level._formation_attack_label.show()
+		_level._formation_icon.show()
+	else:
+		_level._formation_attack_label.hide()
+		_level._formation_icon.hide()
+		_level._condition_label.show()
+		_level._status_label.show()
+		_level._status_label.text = status + (' !!' if status == STATUS_RED else '')
+		# Update label BG Color
+		var new_style_box: StyleBoxFlat = _level._status_label.get_stylebox("normal").duplicate()
+		new_style_box.bg_color = Color(STATUS_COLORS[status])
+		_level._status_label.add_stylebox_override("normal", new_style_box)
+	
+	if status == STATUS_RED or status == STATUS_ENEMY_FORMATION:
+		_level._status_anim_player.play('blinking_text')
+	else:
+		_level._status_anim_player.stop()
+
+
+func set_player_lives(l: int):
+	lives = l
+	var visible_icons = _level._lives_container.get_child_count()
+	var remove_icons = visible_icons > lives
+	for i in range(abs(visible_icons - lives)):
+		if remove_icons:
+			_level._lives_container.get_child(i)
+		else:
+			var new_icon = _level._life_icon.duplicate()
+			new_icon.show()
+			_level._lives_container.add_child(new_icon)
 
 
 func find_closest_node_in_list_to_target(target_origin: Vector3, list):
