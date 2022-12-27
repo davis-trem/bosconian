@@ -28,7 +28,7 @@ func _ready():
 
 
 func _input(event):
-	if event.is_action_pressed("ui_cancel"):
+	if event.is_action_pressed('toggle_camera'):
 		if _cockpit_camera.current:
 			_model.rotation.y = rotation.y
 			_collision_shape.rotation.y = rotation.y
