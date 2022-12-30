@@ -203,5 +203,22 @@ custom_fonts/font = SubResource( 4 )
 text = "Action"
 uppercase = true
 
+[node name="BackButton" type="Button" parent="."]
+margin_left = 20.0
+margin_top = 20.0
+margin_right = 68.0
+margin_bottom = 32.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+custom_colors/font_color_focus = Color( 1, 0.819608, 0, 1 )
+custom_colors/font_color_hover = Color( 1, 0.819608, 0, 1 )
+custom_colors/font_color_pressed = Color( 0.533333, 0.439216, 0, 1 )
+custom_fonts/font = SubResource( 2 )
+custom_styles/focus = SubResource( 3 )
+text = "Back"
+flat = true
+align = 0
+
 [connection signal="pressed" from="MarginContainer/VBoxContainer/ClearActionButton" to="." method="_on_ClearActionButton_pressed"]
 [connection signal="confirmed" from="MarginContainer/AcceptDialog" to="." method="_on_AcceptDialog_confirmed"]
+[connection signal="pressed" from="BackButton" to="." method="_on_BackButton_pressed"]

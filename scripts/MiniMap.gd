@@ -21,10 +21,6 @@ var enemy_markers = {}
 var player_markers = {}
 
 
-func _ready():
-	init_markers()
-
-
 func _process(delta):
 	for player in player_markers:
 		if is_instance_valid(player):
@@ -58,6 +54,15 @@ func _process(delta):
 
 
 func init_markers():
+	# Reset map
+	enemy_markers = {}
+	player_markers = {}
+	# Start at five bc there are 5 nodes that should never be removed
+	if get_child_count() > 5:
+		for i in range(5, get_child_count()):
+			get_child(i).queue_free()
+
+	# Draw map
 	var player_nodes = get_tree().get_nodes_in_group('player')
 	for player in player_nodes:
 		var new_player_marker = _player_marker.duplicate()

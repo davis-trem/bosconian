@@ -9,6 +9,7 @@ onready var _popup_dialog = $MarginContainer/PopupDialog
 onready var _popup_dialog_label = $MarginContainer/PopupDialog/MarginContainer/Label
 onready var _accept_dialog = $MarginContainer/AcceptDialog
 onready var _accept_dialog_label = $MarginContainer/AcceptDialog/MarginContainer/Label
+onready var _back_button = $BackButton
 
 
 const ACTIONS = [
@@ -26,6 +27,8 @@ var action_for_input = null
 
 func _ready():
 	draw_action_labels()
+	_back_button.focus_neighbour_bottom = NodePath(_clear_action_button.get_path())
+	_clear_action_button.focus_neighbour_top = NodePath(_back_button.get_path())
 
 
 func _input(event):
@@ -39,12 +42,17 @@ func _input(event):
 		if action_for_input['key'] == 'clear':
 			if action_in_use != null:
 				InputMap.action_erase_event(action_in_use['key'], event)
-				_accept_dialog_label.text = get_input_name(event) + ' has been unbinded from ' + action_in_use['display_name']
+				_accept_dialog_label.text = (get_input_name(event)
+					+ ' has been unbinded from '
+					+ action_in_use['display_name'])
+				draw_action_labels()
 			else:
 				_accept_dialog_label.text = get_input_name(event) + ' is not binded to an action.'
 		else:
 			if action_in_use != null:
-				_accept_dialog_label.text = get_input_name(event) + ' is already binded to ' + action_in_use['display_name']
+				_accept_dialog_label.text = (get_input_name(event)
+					+ ' is already binded to '
+					+ action_in_use['display_name'])
 			else:
 				InputMap.action_add_event(action_for_input['key'], event)
 				_accept_dialog_label.text = (get_input_name(event)
@@ -99,8 +107,8 @@ func draw_action_labels():
 				new_button_label.text += ('' if (new_button_label.text + text).length() <= 20 else '\n') + text
 	
 	action_buttons[0].grab_focus()
-	_clear_action_button.focus_neighbour_top = NodePath(action_buttons[action_buttons.size() - 1].get_path())
-	action_buttons[action_buttons.size() - 1].focus_neighbour_bottom = NodePath(_clear_action_button.get_path())
+	_back_button.focus_neighbour_top = NodePath(action_buttons[action_buttons.size() - 1].get_path())
+	action_buttons[action_buttons.size() - 1].focus_neighbour_bottom = NodePath(_back_button.get_path())
 
 
 func _on_action_button_pressed(action: Dictionary):
@@ -117,3 +125,7 @@ func _on_ClearActionButton_pressed():
 	_popup_dialog_label.text = 'Press button to unbind'
 	_popup_dialog.popup()
 	action_for_input = {'key': 'clear'}
+
+
+func _on_BackButton_pressed():
+	get_tree().change_scene('res://scenes/MainMenu.tscn')

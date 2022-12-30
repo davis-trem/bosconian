@@ -10,6 +10,7 @@ height = 4.3765
 [sub_resource type="CubeMesh" id=3]
 
 [node name="Player" type="KinematicBody" groups=["player"]]
+transform = Transform( 0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0 )
 collision_mask = 6
 script = ExtResource( 2 )
 

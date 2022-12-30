@@ -1,5 +1,8 @@
 extends StaticBody
 
+
+signal enemy_base_destroyed
+
 const explosion_path = preload('res://scenes/Explosion.tscn')
 const bullet_path = preload('res://scenes/Bullet.tscn')
 
@@ -81,4 +84,5 @@ func on_core_hit(increase_score = true):
 	get_parent().add_child(explosion)
 	explosion.global_transform = global_transform
 	explosion.explode()
+	emit_signal('enemy_base_destroyed')
 	queue_free()
