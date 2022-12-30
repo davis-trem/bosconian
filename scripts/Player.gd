@@ -4,9 +4,8 @@ extends KinematicBody
 const bullet_path = preload('res://scenes/Bullet.tscn')
 
 const SPEED = 18.0
-const BULLET_PROJECT_ARM_INDEX = 4
+const BULLET_PROJECT_ARM_INDEX = 3
 
-onready var _top_down_camera: Camera = $TopDownCamera
 onready var _cockpit_camera: Camera = $CockpitCamera
 onready var _rear_view_camera = $RearViewViewportContainer/Viewport/RearViewCamera
 onready var _rear_view_camera_view_port_container = $RearViewViewportContainer
@@ -16,6 +15,9 @@ onready var _bullet_projector_arm = $BulletProjectArm
 onready var _front_bullet_projector = $BulletProjectArm/FrontBulletProjector
 onready var _back_bullet_projector = $BulletProjectArm/BackBulletProjector
 onready var _rate_of_fire_timer = $RateOfFireTimer
+onready var _top_down_camera_remote_transform = $TopDownCameraRemoteTransform
+
+var _top_down_camera
 
 var move_direction := Vector3(0, 0, -1)
 var velocity := Vector3(0, 0, move_direction.z * SPEED)
@@ -24,6 +26,8 @@ var can_shoot = true
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	_top_down_camera_remote_transform.remote_path = _top_down_camera.get_path()
+	_top_down_camera.current = true
 	_rate_of_fire_timer.wait_time = milliseconds_between_shots / 1000.0
 
 

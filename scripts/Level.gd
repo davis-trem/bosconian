@@ -21,6 +21,7 @@ onready var _life_icon = $OverView/SideMenu/SideMenuItems/LifeIcon
 onready var _timer = $Timer
 onready var _viewport = $OverView/PlayerViewportContainer/Viewport
 onready var _viewport_label = $OverView/PlayerViewportContainer/ViewportLabel
+onready var _top_down_camera = $OverView/PlayerViewportContainer/Viewport/TopDownCamera
 
 # Formation Info
 const FORMATION_OFFSET = 8
@@ -107,6 +108,7 @@ func init_level():
 			weighted_enemy['weight'] = clamp(current_level * 0.25, 0.25, 1)
 	
 	var player = player_path.instance()
+	player._top_down_camera = _top_down_camera
 	_viewport.add_child(player)
 	player.global_transform.origin = Vector3.ZERO
 
