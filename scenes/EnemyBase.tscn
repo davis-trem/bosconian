@@ -68,3 +68,5 @@ transform = Transform( 0.382683, 0, -0.92388, 0, 1, 0, 0.92388, 0, 0.382683, -2.
 
 [node name="CannonOrb6" parent="." instance=ExtResource( 2 )]
 transform = Transform( -0.382683, 0, -0.92388, 0, 1, 0, 0.92388, 0, -0.382683, 2.5, 0, -4 )
+
+[connection signal="body_entered" from="CannonOrb" to="." method="_on_CannonOrb_body_entered"]

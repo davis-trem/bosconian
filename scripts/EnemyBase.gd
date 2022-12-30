@@ -27,6 +27,8 @@ func _process(delta):
 
 func handle_cannon_orb_shooting(delta):
 	var closest_player = Global.find_closest_player(global_transform.origin)
+	if closest_player == null:
+		return
 
 	# find closest orb to player
 	var closest_cannon_orb
@@ -86,3 +88,8 @@ func on_core_hit(increase_score = true):
 	explosion.explode()
 	emit_signal('enemy_base_destroyed')
 	queue_free()
+
+
+func _on_CannonOrb_body_entered(body):
+	if body.is_in_group('player'):
+		body.end_life()

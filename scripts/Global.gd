@@ -59,14 +59,14 @@ func set_player_lives(l: int):
 	var remove_icons = visible_icons > lives
 	for i in range(abs(visible_icons - lives)):
 		if remove_icons:
-			_level._lives_container.get_child(i)
+			_level._lives_container.get_child(i).queue_free()
 		else:
 			var new_icon = _level._life_icon.duplicate()
 			new_icon.show()
 			_level._lives_container.add_child(new_icon)
 
 
-func find_closest_node_in_list_to_target(target_origin: Vector3, list):
+func find_closest_node_in_list_to_target(target_origin: Vector3, list = []):
 	var closest_node
 	for node in list:
 		if(

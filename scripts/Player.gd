@@ -1,7 +1,10 @@
 extends KinematicBody
 
 
+signal player_destroyed
+
 const bullet_path = preload('res://scenes/Bullet.tscn')
+const explosion_path = preload('res://scenes/Explosion.tscn')
 
 const SPEED = 18.0
 const BULLET_PROJECT_ARM_INDEX = 3
@@ -57,7 +60,18 @@ func _physics_process(delta: float):
 
 	handle_shooting()
 	
-	velocity = move_and_slide(velocity, Vector3.UP)
+	var collsion = move_and_collide(velocity * delta)
+	if collsion != null:
+		end_life()
+
+
+func end_life():
+	var explosion = explosion_path.instance()
+	get_parent().add_child(explosion)
+	explosion.global_transform = global_transform
+	explosion.explode()
+	emit_signal('player_destroyed')
+	queue_free()
 
 
 func handle_shooting():

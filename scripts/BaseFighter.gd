@@ -38,7 +38,11 @@ func _physics_process(delta):
 		should_retreat = true
 		retreat()
 
-	var target = get_follow_target() * (-1 if is_retreating else 1)
+	var follow_target = get_follow_target()
+	if follow_target == null:
+		return
+
+	var target = follow_target * (-1 if is_retreating else 1)
 
 	var look_direction = (squad_leader.rotation.y if is_in_squad and not is_squad_leader()
 		else Vector2(-target.z, -target.x).angle())
@@ -50,11 +54,13 @@ func _physics_process(delta):
 	if is_in_squad and not is_squad_leader():
 		translation = squad_leader.translation + squad_formation_offset
 	else:
-		move_and_slide(speed * target)
+		move_and_collide(speed * target * delta)
 
 
-func get_follow_target() -> Vector3:
+func get_follow_target():
 	var player = Global.find_closest_player(global_transform.origin)
+	if player == null:
+		return null
 
 	var closest_front_or_back = Global.find_closest_node_in_list_to_target(
 		global_transform.origin,

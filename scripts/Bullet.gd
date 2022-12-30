@@ -45,7 +45,7 @@ func handle_bullet_hit(target):
 			node_to_explode.on_hit()
 	# enemy shoots player
 	elif not is_from_player and node_to_explode.is_in_group('player'):
-		pass
+		node_to_explode.end_life()
 
 	queue_free()
 

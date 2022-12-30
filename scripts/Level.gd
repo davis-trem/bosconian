@@ -97,6 +97,7 @@ func init_level():
 		obj.queue_free()
 
 	_timer.start()
+	_viewport_label.text = 'Ready'
 	_viewport_label.show()
 	yield(_timer, 'timeout')
 	
@@ -107,10 +108,7 @@ func init_level():
 		if weighted_enemy['name'] == 'formation':
 			weighted_enemy['weight'] = clamp(current_level * 0.25, 0.25, 1)
 	
-	var player = player_path.instance()
-	player._top_down_camera = _top_down_camera
-	_viewport.add_child(player)
-	player.global_transform.origin = Vector3.ZERO
+	create_player()
 
 	var amount_of_enemy_bases_to_spawn := int(clamp(current_level + 2, 3, 8))
 	# Spawn enemy bases
@@ -182,7 +180,6 @@ func spawn_enemy_after_wait_time(delta: float):
 	enemy_spawner_timer += delta
 	if enemy_spawner_timer > enemy_spawner_time:
 		var random_enemy_type = get_random_enemy_type()
-		prints('spawn', random_enemy_type)
 		if random_enemy_type is String and random_enemy_type == 'formation':
 			spawn_squad_formation()
 		else:
@@ -213,6 +210,38 @@ func spawn_squad_formation():
 		sub.squad_formation_offset = offset
 		add_child(sub)
 		sub.global_transform.origin = spawn_points[0] + sub.squad_formation_offset
+
+
+func create_player():
+	var player = player_path.instance()
+	player.connect('player_destroyed', self, '_on_player_destroyed')
+	player._top_down_camera = _top_down_camera
+	_viewport.add_child(player)
+	player.global_transform.origin = Vector3.ZERO
+
+
+func _on_player_destroyed():
+	Global.set_player_lives(Global.lives - 1)
+#	get_tree().paused = true
+	
+	_timer.start()
+	yield(_timer, 'timeout')
+	
+	get_tree().paused = true
+	if Global.lives == 0:
+		_viewport_label.text = 'Game Over'
+		_viewport_label.show()
+	else:
+		_viewport_label.text = 'Ready'
+		_viewport_label.show()
+		create_player()
+		_mini_map.init_markers()
+		
+		_timer.start()
+		yield(_timer, 'timeout')
+		
+		_viewport_label.hide()
+		get_tree().paused = false
 
 
 func _on_enemy_base_destroyed():
