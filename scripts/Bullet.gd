@@ -34,8 +34,11 @@ func _physics_process(delta):
 
 func handle_bullet_hit(target):
 	var node_to_explode = target.get_parent() if target is Area else target
+	# Shooting obstacle
+	if node_to_explode.is_in_group('obstacle'):
+		node_to_explode.explode(is_from_player)
 	# player shoots enemy
-	if is_from_player and not node_to_explode.is_in_group('player'):
+	elif is_from_player and not node_to_explode.is_in_group('player'):
 		if node_to_explode.is_in_group('enemy_base'):
 			if node_to_explode == target:
 				node_to_explode.on_core_hit()

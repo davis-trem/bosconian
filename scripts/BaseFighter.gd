@@ -90,6 +90,8 @@ func is_squad_leader():
 
 
 func on_hit(increase_score = true):
+	if is_squad_leader() and Global.status == Global.STATUS_ENEMY_FORMATION:
+		Global.set_status(Global.STATUS_GREEN)
 	if increase_score:
 		Global.increase_current_score(score_value)
 	var explosion = explosion_path.instance()
@@ -97,6 +99,10 @@ func on_hit(increase_score = true):
 	explosion.global_transform = global_transform
 	explosion.explode()
 	queue_free()
+
+
+func explode():
+	on_hit(false)
 
 
 func _on_VisibilityNotifier_camera_exited(camera):

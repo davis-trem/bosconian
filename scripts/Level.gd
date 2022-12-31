@@ -6,6 +6,8 @@ const player_path = preload('res://scenes/Player.tscn')
 const enemy_base_path = preload('res://scenes/EnemyBase.tscn')
 const i_type_fighter_path = preload('res://scenes/ITypeFighter.tscn')
 const spy_ship_path = preload('res://scenes/SpyShip.tscn')
+const astroid_path = preload('res://scenes/Astroid.tscn')
+const cosmo_mine_path = preload('res://scenes/CosmoMine.tscn')
 
 onready var _hi_score_label = $OverView/SideMenu/SideMenuItems/HiScore
 onready var _current_score_label = $OverView/SideMenu/SideMenuItems/CurrentScore
@@ -60,6 +62,11 @@ const MAX_ENEMY_SPAWNER_TIME = 20
 var enemy_spawner_time = rand_range(MIN_ENEMY_SPAWNER_TIME, MAX_ENEMY_SPAWNER_TIME)
 var enemy_spawner_timer = 0
 
+# Obstacle Info
+const obstacle_padding = 2
+const obstacle_types = [astroid_path, cosmo_mine_path]
+const amount_of_obstacles_to_spawn = 40
+
 var current_level = 1
 
 
@@ -93,6 +100,7 @@ func init_level():
 	var objects_to_remove = get_tree().get_nodes_in_group('enemy_ship')
 	objects_to_remove += get_tree().get_nodes_in_group('enemy_base')
 	objects_to_remove += get_tree().get_nodes_in_group('player')
+	objects_to_remove += get_tree().get_nodes_in_group('obstacle')
 	for obj in objects_to_remove:
 		obj.queue_free()
 
@@ -118,6 +126,8 @@ func init_level():
 		enemy_base.connect('enemy_base_destroyed', self, '_on_enemy_base_destroyed')
 		add_child(enemy_base)
 		enemy_base.global_transform.origin = get_unique_base_position()
+	
+	spawn_obstacles()
 
 	init_enemy_type_probabilities()
 	
@@ -159,6 +169,33 @@ func get_unique_base_position() -> Vector3:
 	return position
 
 
+func spawn_obstacles():
+	for i in range(amount_of_obstacles_to_spawn):
+		var obstacle = obstacle_types[randi() % obstacle_types.size()].instance()
+		add_child(obstacle)
+		obstacle.global_transform.origin = get_unique_obstacle_position()
+
+
+func get_unique_obstacle_position() -> Vector3:
+	var position = Vector3(
+		rand_range(
+			Global._playing_field.limits['left'] + obstacle_padding,
+			Global._playing_field.limits['right'] - obstacle_padding),
+		0,
+		rand_range(
+			Global._playing_field.limits['bottom'] + obstacle_padding,
+			Global._playing_field.limits['top'] - obstacle_padding)
+	)
+	# Avoid overlapping bases and obstacles
+	var nodes_to_avoid = (get_tree().get_nodes_in_group('enemy_base')
+		+ get_tree().get_nodes_in_group('obstacle'))
+	for node in nodes_to_avoid:
+		if (position.distance_to(node.global_transform.origin) < obstacle_padding
+			or position.distance_to(Vector3.ZERO) < obstacle_padding):
+			return get_unique_obstacle_position()
+	return position
+
+
 func init_enemy_type_probabilities():
 	total_enemy_type_weight = 0.0
 	for weighted_enemy in weighted_enemy_types:
@@ -185,6 +222,8 @@ func spawn_enemy_after_wait_time(delta: float):
 		else:
 			var enemy: KinematicBody = random_enemy_type.instance()
 			add_child(enemy)
+			if enemy.is_in_group('spy_ship'):
+				Global.set_status(Global.STATUS_YELLOW)
 			# place enemy outside of playing field
 			enemy.global_transform.origin = spawn_points[randi() % spawn_points.size()]
 			_mini_map.add_enemy_ship(enemy)
@@ -194,6 +233,7 @@ func spawn_enemy_after_wait_time(delta: float):
 
 
 func spawn_squad_formation():
+	Global.set_status(Global.STATUS_ENEMY_FORMATION)
 	var lead := i_type_fighter_path.instance()
 	lead.is_in_squad = true
 	lead.squad_leader = lead

@@ -74,6 +74,10 @@ func end_life():
 	queue_free()
 
 
+func explode():
+	end_life()
+
+
 func handle_shooting():
 	if Input.is_action_pressed("ui_accept"):
 		if can_shoot:
