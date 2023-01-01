@@ -65,7 +65,7 @@ var enemy_spawner_timer = 0
 # Obstacle Info
 const obstacle_padding = 2
 const obstacle_types = [astroid_path, cosmo_mine_path]
-const amount_of_obstacles_to_spawn = 40
+const amount_of_obstacles_to_spawn_per_quadrant = 12
 
 var current_level = 1
 
@@ -170,29 +170,32 @@ func get_unique_base_position() -> Vector3:
 
 
 func spawn_obstacles():
-	for i in range(amount_of_obstacles_to_spawn):
-		var obstacle = obstacle_types[randi() % obstacle_types.size()].instance()
-		add_child(obstacle)
-		obstacle.global_transform.origin = get_unique_obstacle_position()
+	var quadrants = [
+		{'x': Global._playing_field.limits['left'] + obstacle_padding,
+			'z': Global._playing_field.limits['top'] - obstacle_padding},
+		{'x': Global._playing_field.limits['right'] - obstacle_padding,
+			'z': Global._playing_field.limits['top'] - obstacle_padding},
+		{'x': Global._playing_field.limits['left'] + obstacle_padding,
+			'z': Global._playing_field.limits['bottom'] + obstacle_padding},
+		{'x': Global._playing_field.limits['right'] - obstacle_padding,
+			'z': Global._playing_field.limits['bottom'] + obstacle_padding}
+	]
+	for quadrant in quadrants:
+		for i in range(amount_of_obstacles_to_spawn_per_quadrant):
+			var obstacle = obstacle_types[randi() % obstacle_types.size()].instance()
+			add_child(obstacle)
+			obstacle.global_transform.origin = get_unique_obstacle_position(quadrant)
 
 
-func get_unique_obstacle_position() -> Vector3:
-	var position = Vector3(
-		rand_range(
-			Global._playing_field.limits['left'] + obstacle_padding,
-			Global._playing_field.limits['right'] - obstacle_padding),
-		0,
-		rand_range(
-			Global._playing_field.limits['bottom'] + obstacle_padding,
-			Global._playing_field.limits['top'] - obstacle_padding)
-	)
+func get_unique_obstacle_position(quadrant: Dictionary) -> Vector3:
+	var position = Vector3(rand_range(0, quadrant['x']), 0, rand_range(0, quadrant['z']))
 	# Avoid overlapping bases and obstacles
 	var nodes_to_avoid = (get_tree().get_nodes_in_group('enemy_base')
 		+ get_tree().get_nodes_in_group('obstacle'))
 	for node in nodes_to_avoid:
 		if (position.distance_to(node.global_transform.origin) < obstacle_padding
-			or position.distance_to(Vector3.ZERO) < obstacle_padding):
-			return get_unique_obstacle_position()
+			or position.distance_to(Vector3.ZERO) < spawn_padding):
+			return get_unique_obstacle_position(quadrant)
 	return position
 
 
